@@ -31,6 +31,12 @@
         height: 20px;
         background-color: #4caf50;
       }
+      footer {
+        margin-top: 40px;
+        /* text-align: right; */
+        font-size: 12px;
+        color: #9b9a9a;
+      }
     </style>
     <!-- 引入 OpenCC.js -->
     <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/cn2t.js"></script>
@@ -43,6 +49,10 @@
   </head>
   <body>
     <h1>線上語音辨識</h1>
+    <footer>
+      <p>作者：呂可名 Ke-Ming Lyu <br />信箱：keming0325@gmail.com</p>
+    </footer>
+
     <!-- API Key 輸入欄位 -->
     <label for="apiKey">請輸入您的 OpenAI API Key：</label>
     <input type="password" id="apiKey" placeholder="sk-..." required />
@@ -60,7 +70,13 @@
 
     <!-- 影片列表及進度顯示 -->
     <div id="fileList"></div>
-
+    <!-- 作者資訊 -->
+    <!-- <footer>
+      <p>
+        author: 呂可名 Ke-Ming Lyu<br />
+        email: keming0325@gmail.com
+      </p>
+    </footer> -->
     <!-- 引入處理邏輯的 JavaScript -->
     <script src="script.js"></script>
   </body>
