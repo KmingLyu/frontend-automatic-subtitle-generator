@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <title>線上語音辨識</title>
+    <style>
+      /* 簡單的CSS樣式 */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      label,
+      input,
+      button {
+        display: block;
+        margin-bottom: 15px;
+      }
+      #fileList {
+        margin-top: 20px;
+      }
+      .file-item {
+        margin-bottom: 10px;
+      }
+      .progress-bar {
+        width: 100%;
+        background-color: #f3f3f3;
+        margin-top: 5px;
+      }
+      .progress {
+        width: 0%;
+        height: 20px;
+        background-color: #4caf50;
+      }
+    </style>
+    <!-- 引入 OpenCC.js -->
+    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/cn2t.js"></script>
+    <!-- 引入 ffmpeg.wasm -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script> -->
+    <!-- 引入 wavefile 庫 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/wavefile"></script> -->
+    <!-- 引入 audio-buffer-to-wav 庫 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/audiobuffer-to-wav"></script> -->
+  </head>
+  <body>
+    <h1>線上語音辨識</h1>
+    <!-- API Key 輸入欄位 -->
+    <label for="apiKey">請輸入您的 OpenAI API Key：</label>
+    <input type="password" id="apiKey" placeholder="sk-..." required />
+
+    <!-- 新增 Prompt 輸入欄位 -->
+    <label for="prompt">請輸入提示詞（Prompt）：</label>
+    <input type="text" id="prompt" placeholder="可選，作為模型的引導" />
+
+    <!-- 影片檔案上傳欄位 -->
+    <label for="videoFiles">上傳影片檔案（可多選）：</label>
+    <input type="file" id="videoFiles" accept="audio/*,video/*" multiple />
+
+    <!-- 開始辨識按鈕 -->
+    <button id="startButton" disabled>開始辨識</button>
+
+    <!-- 影片列表及進度顯示 -->
+    <div id="fileList"></div>
+
+    <!-- 引入處理邏輯的 JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>
