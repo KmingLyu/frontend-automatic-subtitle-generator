@@ -89,7 +89,7 @@ This is an online tool that automatically converts videos into subtitles (SRT fo
 - **OpenAI Whisper Model**
 
   - Uses OpenAI's `whisper-1` model for speech recognition.
-  - For API documentation, see [OpenAI API Reference](https://platform.openai.com/docs/api-reference/audio/create).
+  - For API documentation, see [OpenAI API Reference](https://platform.openai.com/docs/api-reference/audio/createTranscription).
 
 - **OpenCC Simplified-Traditional Conversion**
 

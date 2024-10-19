@@ -1,4 +1,4 @@
-# 線上自動影片轉字幕程式
+# 線上自動影片字幕產生器
 
 ## 介紹
 
@@ -87,7 +87,7 @@
 - **OpenAI Whisper 模型**
 
   - 使用 OpenAI 提供的 `whisper-1` 模型進行語音辨識。
-  - API 文件詳見 [OpenAI API Reference](https://platform.openai.com/docs/api-reference/audio/create)。
+  - API 文件詳見 [OpenAI API Reference](https://platform.openai.com/docs/api-reference/audio/createTranscription)。
 
 - **OpenCC 繁簡轉換**
 
