@@ -1,3 +1,5 @@
+[繁體中文說明](README_zh.md)
+
 # Frontend Automatic Subtitle Generator
 
 ## Introduction
