@@ -123,7 +123,7 @@ function processFiles() {
 
     const file = files[currentIndex];
     const statusSpan = document.getElementById(`status-${currentIndex}`);
-    statusSpan.textContent = "處理中...";
+    statusSpan.textContent = "處理中，不要離開畫面...";
 
     transcribeAndConvert(file, currentIndex)
       .then(() => {
@@ -142,6 +142,7 @@ function processFiles() {
 }
 
 // 發送語音辨識並轉換字幕
+// 開始辨識並轉換字幕
 async function transcribeAndConvert(file, index) {
   const progressDiv = document.getElementById(`progress-${index}`);
 
@@ -151,7 +152,10 @@ async function transcribeAndConvert(file, index) {
   }
 
   if (file.size <= 25 * 1024 * 1024) {
-    // 文件小於等於25MB，直接上傳
+    // 將進度條設為 0%
+    updateProgress(0);
+
+    // 創建 FormData
     const formData = new FormData();
     formData.append("file", file);
     formData.append("model", "whisper-1");
@@ -180,9 +184,14 @@ async function transcribeAndConvert(file, index) {
 
       const result = await response.text();
 
+      // 在上傳完成後，將進度條設為 100%
+      updateProgress(100);
+
+      // 繁體轉換
       const converter = OpenCC.Converter({ from: "cn", to: "tw" });
       const convertedResult = await converter(result);
 
+      // 下載 srt 文件
       const blob = new Blob([convertedResult], { type: "text/plain" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -209,35 +218,61 @@ async function transcribeLargeFile(file, index, updateProgress) {
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
   // 讀取文件為 ArrayBuffer
-  const arrayBuffer = await file.arrayBuffer();
+  let arrayBuffer;
+  try {
+    arrayBuffer = await file.arrayBuffer();
+    console.log("成功讀取文件為 ArrayBuffer");
+  } catch (error) {
+    console.error("讀取文件時發生錯誤：", error);
+    throw new Error("讀取文件時發生錯誤。");
+  }
 
   // 解碼音頻數據
   let audioBuffer;
   try {
     audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    console.log("成功解碼音訊資料");
   } catch (error) {
+    console.error("無法解碼音訊資料：", error);
     throw new Error("無法解碼音訊資料。");
   }
 
   const duration = audioBuffer.duration;
   const MAX_CHUNK_DURATION = 120; // 秒
   const totalChunks = Math.ceil(duration / MAX_CHUNK_DURATION);
+  console.log(`總時長：${duration}秒，將被切割成 ${totalChunks} 個片段`);
 
   let transcripts = [];
   for (let i = 0; i < totalChunks; i++) {
     const startTime = i * MAX_CHUNK_DURATION;
     const endTime = Math.min((i + 1) * MAX_CHUNK_DURATION, duration);
 
-    // 切割音頻
-    const chunkBuffer = sliceAudioBuffer(
-      audioBuffer,
-      startTime,
-      endTime,
-      audioContext
+    console.log(
+      `正在處理第 ${i + 1} 個片段，時間範圍：${startTime} - ${endTime} 秒`
     );
 
+    // 切割音頻
+    let chunkBuffer;
+    try {
+      chunkBuffer = sliceAudioBuffer(
+        audioBuffer,
+        startTime,
+        endTime,
+        audioContext
+      );
+    } catch (error) {
+      console.error(`切割音訊時發生錯誤：${error}`);
+      throw new Error(`切割音訊時發生錯誤：片段 ${i + 1}`);
+    }
+
     // 將 AudioBuffer 轉換為 WAV Blob
-    const wavBlob = audioBufferToWavBlob(chunkBuffer);
+    let wavBlob;
+    try {
+      wavBlob = audioBufferToWavBlob(chunkBuffer);
+    } catch (error) {
+      console.error(`轉換音訊為 WAV Blob 時發生錯誤：${error}`);
+      throw new Error(`轉換音訊為 WAV Blob 時發生錯誤：片段 ${i + 1}`);
+    }
 
     // 創建 FormData 並上傳
     const formData = new FormData();
@@ -262,6 +297,8 @@ async function transcribeLargeFile(file, index, updateProgress) {
       );
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`語音辨識失敗：${errorText}`);
         throw new Error(
           `語音辨識失敗，片段 ${
             i + 1
@@ -278,7 +315,9 @@ async function transcribeLargeFile(file, index, updateProgress) {
 
       // 更新進度
       updateProgress(Math.floor(((i + 1) / totalChunks) * 100));
+      console.log(`片段 ${i + 1} 處理完成，進度已更新。`);
     } catch (error) {
+      console.error(`處理片段 ${i + 1} 時發生錯誤：${error}`);
       throw new Error(`處理片段 ${i + 1} 時發生錯誤：${error.message}`);
     }
   }
