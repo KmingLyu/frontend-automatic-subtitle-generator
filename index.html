@@ -55,12 +55,6 @@
     </style>
     <!-- 引入 OpenCC.js -->
     <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/cn2t.js"></script>
-    <!-- 引入 ffmpeg.wasm -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script> -->
-    <!-- 引入 wavefile 庫 -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/wavefile"></script> -->
-    <!-- 引入 audio-buffer-to-wav 庫 -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/audiobuffer-to-wav"></script> -->
   </head>
   <body>
     <h1>線上語音辨識</h1>
@@ -84,7 +78,7 @@
     <input type="text" id="prompt" placeholder="可選，作為模型的引導" />
 
     <!-- 影片檔案上傳欄位 -->
-    <label for="videoFiles">上傳影片檔案（可多選）：</label>
+    <label for="videoFiles">上傳音訊(.mp3)或影片(.mp4)（可多選）：</label>
     <input type="file" id="videoFiles" accept="audio/*,video/*" multiple />
 
     <!-- 開始辨識按鈕 -->
@@ -92,13 +86,7 @@
 
     <!-- 影片列表及進度顯示 -->
     <div id="fileList"></div>
-    <!-- 作者資訊 -->
-    <!-- <footer>
-      <p>
-        author: 呂可名 Ke-Ming Lyu<br />
-        email: keming0325@gmail.com
-      </p>
-    </footer> -->
+
     <!-- 引入處理邏輯的 JavaScript -->
     <script src="script.js"></script>
     <!-- <script src="script1.js"></script> -->
