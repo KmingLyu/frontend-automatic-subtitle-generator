@@ -1,6 +1,6 @@
 [繁體中文說明](README_zh.md)
 
-[website link](https://subgenerator.netlify.app/)
+[Access link](https://subgenerator.netlify.app/)
 
 # Frontend Automatic Subtitle Generator
 
